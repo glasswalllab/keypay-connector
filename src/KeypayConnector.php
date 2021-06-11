@@ -6,7 +6,7 @@ use glasswalllab\wiiseconnector\Jobs\CallWebService;
 use glasswalllab\wiiseconnector\TokenStore\TokenCache;
 use Illuminate\Http\Request;
 
-class Keypayonnector 
+class KeypayConnector 
 {
     public function CallWebServiceSync($endpoint,$method,$body)
     {  
