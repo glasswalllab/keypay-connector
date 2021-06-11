@@ -1,11 +1,11 @@
 {
-    "name": "glasswalllab/wiiseconnector",
-    "description": "Connection to Wiise (Microsoft Business Central)",
+    "name": "glasswalllab/keypayconnector",
+    "description": "Connection to keypay (Microsoft Business Central)",
     "keywords": [
         "glasswalllab",
-        "wiiseconnector"
+        "keypayconnector"
     ],
-    "homepage": "https://github.com/glasswalllab/wiise-connector",
+    "homepage": "https://github.com/glasswalllab/keypay-connector",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "glasswalllab\\wiiseconnector\\": "src"
+            "glasswalllab\\keypayconnector\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "glasswalllab\\wiiseconnector\\Tests\\": "tests"
+            "glasswalllab\\keypayconnector\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -45,10 +45,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "glasswalllab\\wiiseconnector\\WiiseConnectorServiceProvider"
+                "glasswalllab\\keypayconnector\\keypayConnectorServiceProvider"
             ],
             "aliases": {
-                "WiiseConnector": "glasswalllab\\wiiseconnector\\WiiseConnectorFacade"
+                "keypayConnector": "glasswalllab\\keypayconnector\\keypayConnectorFacade"
             }
         }
     }
