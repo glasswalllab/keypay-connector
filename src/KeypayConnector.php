@@ -2,8 +2,8 @@
 
 namespace Glasswalllab\KeypayConnector;
 
-use glasswalllab\wiiseconnector\Jobs\CallWebService;
-use glasswalllab\wiiseconnector\TokenStore\TokenCache;
+use glasswalllab\Keypayconnector\Jobs\CallWebService;
+use glasswalllab\Keypayconnector\TokenStore\TokenCache;
 use Illuminate\Http\Request;
 
 class KeypayConnector 
@@ -12,9 +12,9 @@ class KeypayConnector
     {  
         //Could move the below to job - but was having issues with the return
         $tokenCache = new TokenCache();
-        $accessToken = $tokenCache->getAccessToken('wiise');
+        $accessToken = $tokenCache->getAccessToken(config('keypayConnector.provider'));
 
-        $url = config('wiiseConnector.baseUrl').config('wiiseConnector.tenantId')."/Production/ODataV4/Company('".config('wiiseConnector.companyName')."')".$endpoint;
+        $url = config('keypayConnector.baseUrl').config('keypayConnector.tenantId')."/Production/ODataV4/Company('".config('keypayConnector.companyName')."')".$endpoint;
 
         $options['headers']['Content-Type'] = 'application/json';
         $options['headers']['If-Match'] = '*';
@@ -22,13 +22,13 @@ class KeypayConnector
         $options['body'] = $body; //json encoded value
         
         $this->oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId'                => config('wiiseConnector.appId'),
-            'clientSecret'            => config('wiiseConnector.appSecret'),
-            'redirectUri'             => config('wiiseConnector.redirectUri'),
-            'urlAuthorize'            => config('wiiseConnector.authority').config('wiiseConnector.tenantId').config('wiiseConnector.authoriseEndpoint'),
-            'urlAccessToken'          => config('wiiseConnector.authority').config('wiiseConnector.tenantId').config('wiiseConnector.tokenEndpoint'),
-            'urlResourceOwnerDetails' => config('wiiseConnector.resource'),
-            'scopes'                  => config('wiiseConnector.scopes'),
+            'clientId'                => config('keypayConnector.appId'),
+            'clientSecret'            => config('keypayConnector.appSecret'),
+            'redirectUri'             => config('keypayConnector.redirectUri'),
+            'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
+            'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
+            'urlResourceOwnerDetails' => config('keypayConnector.resource'),
+            'scopes'                  => config('keypayConnector.scopes'),
         ]);
 
         try
