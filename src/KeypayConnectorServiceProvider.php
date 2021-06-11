@@ -51,7 +51,7 @@ class KeypayConnectorServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/keypay.php', 'keypayConnector');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'keypayConnector');
 
         // Register the main class to use with the facade
         $this->app->singleton('keypayConnector', function () {
