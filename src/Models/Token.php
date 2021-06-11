@@ -1,6 +1,6 @@
 <?php
 
-namespace glasswalllab\wiiseconnector\Models;
+namespace glasswalllab\keypayconnector\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

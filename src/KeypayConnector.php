@@ -1,6 +1,6 @@
 <?php
 
-namespace Glasswalllab\KeypayConnector;
+namespace glasswalllab\keypayconnector;
 
 use glasswalllab\keypayconnector\Jobs\CallWebService;
 use glasswalllab\keypayconnector\TokenStore\TokenCache;

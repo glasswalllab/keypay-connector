@@ -1,6 +1,6 @@
 <?php
 
-namespace Glasswalllab\WiiseConnector;
+namespace glasswalllab\keypayconnector;
 
 use Illuminate\Support\Facades\Facade;
 

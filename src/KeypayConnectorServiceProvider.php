@@ -1,6 +1,6 @@
 <?php
 
-namespace Glasswalllab\KeypayConnector;
+namespace glasswalllab\keypayconnector;
 
 use Illuminate\Support\ServiceProvider;
 use glasswalllab\keypayconnector\Providers\EventServiceProvider;
