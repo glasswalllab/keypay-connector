@@ -1,11 +1,11 @@
 <?php
 
-namespace glasswalllab\wiiseconnector\Providers;
+namespace Glasswalllab\KeypayConnector\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-use glasswalllab\wiiseconnector\Events\ResponseReceived;
-use glasswalllab\wiiseconnector\Listeners\UpdateResponse;
+use glasswalllab\keypayconnector\Events\ResponseReceived;
+use glasswalllab\keypayconnector\Listeners\UpdateResponse;
 
 class EventServiceProvider extends ServiceProvider
 {
