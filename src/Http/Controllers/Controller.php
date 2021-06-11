@@ -1,6 +1,6 @@
 <?php
 
-namespace glasswalllab\wiiseconnector\Http\Controllers;
+namespace glasswalllab\keypayconnector\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
