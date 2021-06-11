@@ -2,8 +2,8 @@
 
 namespace Glasswalllab\KeypayConnector;
 
-use glasswalllab\Keypayconnector\Jobs\CallWebService;
-use glasswalllab\Keypayconnector\TokenStore\TokenCache;
+use glasswalllab\keypayconnector\Jobs\CallWebService;
+use glasswalllab\keypayconnector\TokenStore\TokenCache;
 use Illuminate\Http\Request;
 
 class KeypayConnector 
