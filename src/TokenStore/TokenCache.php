@@ -1,6 +1,6 @@
 <?php
 
-namespace glasswalllab\keypayconnector\TokenStore;
+namespace Glasswalllab\KeypayConnector\TokenStore;
 
 use glasswalllab\keypayconnector\Models\Token;
 use Carbon\Carbon;
