@@ -14,8 +14,8 @@ class AuthController extends Controller
       'clientId'                => config('keypayConnector.appId'),
       'clientSecret'            => config('keypayConnector.appSecret'),
       'redirectUri'             => config('keypayConnector.redirectUri'),
-      'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tennantId').config('keypayConnector.authoriseEndpoint'),
-      'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tennantId').config('keypayConnector.tokenEndpoint'),
+      'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
+      'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
       'urlResourceOwnerDetails' => config('keypayConnector.resource'),
       'scopes'                  => config('keypayConnector.scopes'),
     ]);
@@ -57,8 +57,8 @@ class AuthController extends Controller
         'clientId'                => config('keypayConnector.appId'),
         'clientSecret'            => config('keypayConnector.appSecret'),
         'redirectUri'             => config('keypayConnector.redirectUri'),
-        'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tennantId').config('keypayConnector.authoriseEndpoint'),
-        'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tennantId').config('keypayConnector.tokenEndpoint'),
+        'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
+        'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
         'urlResourceOwnerDetails' => config('keypayConnector.resource'),
         'scopes'                  => config('keypayConnector.scopes'),
       ]);
