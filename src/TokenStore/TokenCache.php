@@ -1,15 +1,15 @@
 <?php
 
-namespace glasswalllab\wiiseconnector\TokenStore;
+namespace glasswalllab\keypayconnector\TokenStore;
 
-use glasswalllab\wiiseconnector\Models\Token;
+use glasswalllab\keypayconnector\Models\Token;
 use Carbon\Carbon;
 
 class TokenCache {
 
   public function storeTokens($accessToken) {
    
-    $token = Token::updateOrCreate(['provider' => config('wiiseConnector.provider')],
+    $token = Token::updateOrCreate(['provider' => config('keypayConnector.provider')],
         [
             'accessToken' => $accessToken->getToken(),
             'refreshToken' => $accessToken->getRefreshToken(),
@@ -45,13 +45,13 @@ class TokenCache {
         // Initialize the OAuth client
         // Initialize the OAuth client
         $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId'                => config('wiiseConnector.appId'),
-            'clientSecret'            => config('wiiseConnector.appSecret'),
-            'redirectUri'             => config('wiiseConnector.redirectUri'),
-            'urlAuthorize'            => config('wiiseConnector.authority').config('wiiseConnector.tenantId').config('wiiseConnector.authoriseEndpoint'),
-            'urlAccessToken'          => config('wiiseConnector.authority').config('wiiseConnector.tenantId').config('wiiseConnector.tokenEndpoint'),
-            'urlResourceOwnerDetails' => config('wiiseConnector.resource'),
-            'scopes'                  => config('wiiseConnector.scopes'),
+            'clientId'                => config('keypayConnector.appId'),
+            'clientSecret'            => config('keypayConnector.appSecret'),
+            'redirectUri'             => config('keypayConnector.redirectUri'),
+            'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
+            'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
+            'urlResourceOwnerDetails' => config('keypayConnector.resource'),
+            'scopes'                  => config('keypayConnector.scopes'),
         ]);
   
         try {
