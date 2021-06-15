@@ -1,9 +1,9 @@
 <?php
 
-namespace glasswalllab\wiiseconnector\Jobs;
+namespace glasswalllab\keypayconnector\Jobs;
 
-use glasswalllab\wiiseconnector\TokenStore\TokenCache;
-use glasswalllab\wiiseconnector\Events\ResponseReceived;
+use glasswalllab\keypayconnector\TokenStore\TokenCache;
+use glasswalllab\keypayconnector\Events\ResponseReceived;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -29,9 +29,9 @@ class CallWebService implements ShouldQueue
     public function handle()
     {
         $tokenCache = new TokenCache();
-        $accessToken = $tokenCache->getAccessToken('wiise');
+        $accessToken = $tokenCache->getAccessToken('keypay');
 
-        $url = config('wiiseConnector.baseUrl').config('wiiseConnector.tenantId')."/Production/ODataV4/Company('".config('wiiseConnector.companyName')."')".$this->endpoint;
+        $url = config('keypayConnector.baseUrl').config('keypayConnector.tenantId')."/Production/ODataV4/Company('".config('keypayConnector.companyName')."')".$this->endpoint;
 
         $options['headers']['Content-Type'] = 'application/json';
         $options['headers']['If-Match'] = '*';
@@ -39,13 +39,13 @@ class CallWebService implements ShouldQueue
         $options['body'] = $this->body; //json encoded value
         
         $this->oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId'                => config('wiiseConnector.appId'),
-            'clientSecret'            => config('wiiseConnector.appSecret'),
-            'redirectUri'             => config('wiiseConnector.redirectUri'),
-            'urlAuthorize'            => config('wiiseConnector.authority').config('wiiseConnector.tenantId').config('wiiseConnector.authoriseEndpoint'),
-            'urlAccessToken'          => config('wiiseConnector.authority').config('wiiseConnector.tenantId').config('wiiseConnector.tokenEndpoint'),
-            'urlResourceOwnerDetails' => config('wiiseConnector.resource'),
-            'scopes'                  => config('wiiseConnector.scopes'),
+            'clientId'                => config('keypayConnector.appId'),
+            'clientSecret'            => config('keypayConnector.appSecret'),
+            'redirectUri'             => config('keypayConnector.redirectUri'),
+            'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
+            'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
+            'urlResourceOwnerDetails' => config('keypayConnector.resource'),
+            'scopes'                  => config('keypayConnector.scopes'),
         ]);
 
         try

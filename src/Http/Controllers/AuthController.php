@@ -11,13 +11,11 @@ class AuthController extends Controller
   {
     // Initialize the OAuth client
     $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
-      'clientId'                => config('keypayConnector.appId'),
       'clientSecret'            => config('keypayConnector.appSecret'),
       'redirectUri'             => config('keypayConnector.redirectUri'),
-      'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
-      'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
-      'urlResourceOwnerDetails' => config('keypayConnector.resource'),
-      'scopes'                  => config('keypayConnector.scopes'),
+      'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.authoriseEndpoint'),
+      'client_id'               => config('keypayConnector.appId'),
+      'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
     ]);
 
     $authUrl = $oauthClient->getAuthorizationUrl();
@@ -25,7 +23,7 @@ class AuthController extends Controller
     // Save client state so we can validate in callback
     session(['oauthState' => $oauthClient->getState()]);
 
-    // Redirect to AAD signin page
+    // Redirect to KeyPay signin page
     return redirect()->away($authUrl);
   }
 
@@ -57,10 +55,8 @@ class AuthController extends Controller
         'clientId'                => config('keypayConnector.appId'),
         'clientSecret'            => config('keypayConnector.appSecret'),
         'redirectUri'             => config('keypayConnector.redirectUri'),
-        'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
-        'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
-        'urlResourceOwnerDetails' => config('keypayConnector.resource'),
-        'scopes'                  => config('keypayConnector.scopes'),
+        'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.authoriseEndpoint'),
+        'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
       ]);
 
       try { 

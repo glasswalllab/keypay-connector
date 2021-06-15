@@ -1,8 +1,8 @@
 <?php
 
-namespace glasswalllab\wiiseconnector\Listeners;
+namespace glasswalllab\keypayconnector\Listeners;
 
-use glasswalllab\wiiseconnector\Events\ResponseReceived;
+use glasswalllab\keypayconnector\Events\ResponseReceived;
 
 class UpdateResponse
 {
