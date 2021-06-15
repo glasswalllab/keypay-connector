@@ -55,11 +55,12 @@ class AuthController extends Controller
       // Initialize the OAuth client
       // Initialize the OAuth client
       $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
-        'clientId'                => config('keypayConnector.appId'),
         'clientSecret'            => config('keypayConnector.appSecret'),
         'redirectUri'             => config('keypayConnector.redirectUri'),
         'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.authoriseEndpoint'),
+        'client_id'               => config('keypayConnector.appId'),
         'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
+        'urlResourceOwnerDetails' => config('keypayConnector.resource'),
       ]);
 
       try { 
