@@ -57,7 +57,7 @@ class AuthController extends Controller
         'clientSecret'            => config('keypayConnector.appSecret'),
         'redirectUri'             => config('keypayConnector.redirectUri'),
         'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.authoriseEndpoint'),
-        'client_id'               => config('keypayConnector.appId'),
+        'clientId'               => config('keypayConnector.appId'),
         'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
         'urlResourceOwnerDetails' => config('keypayConnector.resource'),
       ]);
