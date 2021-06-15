@@ -21,7 +21,7 @@ class KeypayConnector
 
         $options['body'] = $body; //json encoded value
 
-        $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
+        $this->$oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
             'clientSecret'            => config('keypayConnector.appSecret'),
             'clientId'                => config('keypayConnector.appId'),
             'redirectUri'             => config('keypayConnector.redirectUri'),
