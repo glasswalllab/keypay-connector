@@ -47,8 +47,8 @@ class ComposerStaticInitc5b8bf390a65476a5b15ac014e282571
         ),
         'g' => 
         array (
-            'glasswalllab\\wiiseconnector\\Tests\\' => 34,
-            'glasswalllab\\wiiseconnector\\' => 28,
+            'glasswalllab\\keypayconnector\\Tests\\' => 35,
+            'glasswalllab\\keypayconnector\\' => 29,
         ),
         'Z' => 
         array (
@@ -182,11 +182,11 @@ class ComposerStaticInitc5b8bf390a65476a5b15ac014e282571
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
-        'glasswalllab\\wiiseconnector\\Tests\\' => 
+        'glasswalllab\\keypayconnector\\Tests\\' => 
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'glasswalllab\\wiiseconnector\\' => 
+        'glasswalllab\\keypayconnector\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

@@ -43,6 +43,7 @@ use Spatie\Ray\Settings\Settings;
 use Spatie\Ray\Settings\SettingsFactory;
 use Spatie\Ray\Support\Counters;
 use Spatie\Ray\Support\Limiters;
+use Spatie\Ray\Support\RateLimiter;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Throwable;
 
@@ -73,11 +74,17 @@ class Ray
     /** @var string */
     public $uuid = '';
 
+    /** @var bool */
+    public $canSendPayload = true;
+
     /** @var \Symfony\Component\Stopwatch\Stopwatch[] */
     public static $stopWatches = [];
 
     /** @var bool|null */
     public static $enabled = null;
+
+    /** @var RateLimiter */
+    public static $rateLimiter;
 
     public static function create(Client $client = null, string $uuid = null): self
     {
@@ -99,6 +106,8 @@ class Ray
         $this->uuid = $uuid ?? static::$fakeUuid ?? Uuid::uuid4()->toString();
 
         static::$enabled = static::$enabled ?? $this->settings->enable ?? true;
+
+        static::$rateLimiter = static::$rateLimiter ?? RateLimiter::disabled();
     }
 
     public function enable(): self
@@ -331,6 +340,26 @@ class Ray
         return $this->sendRequest($payload);
     }
 
+    public function if($boolOrCallable, ?callable $callback = null): self
+    {
+        if (is_callable($boolOrCallable)) {
+            $boolOrCallable = (bool)$boolOrCallable();
+        }
+
+        if ($boolOrCallable && $callback !== null) {
+            $callback($this);
+        }
+
+        if ($callback === null) {
+            $this->canSendPayload = $boolOrCallable;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Use `if` instead of this method
+     */
     public function showWhen($boolOrCallable): self
     {
         if (is_callable($boolOrCallable)) {
@@ -344,11 +373,17 @@ class Ray
         return $this;
     }
 
+    /**
+     * @deprecated Use `if` instead of this method
+     */
     public function showIf($boolOrCallable): self
     {
         return $this->showWhen($boolOrCallable);
     }
 
+    /**
+     * @deprecated Use `if` instead of this method
+     */
     public function removeWhen($boolOrCallable): self
     {
         if (is_callable($boolOrCallable)) {
@@ -362,6 +397,9 @@ class Ray
         return $this;
     }
 
+    /**
+     * @deprecated Use `if` instead of this method
+     */
     public function removeIf($boolOrCallable): self
     {
         return $this->removeWhen($boolOrCallable);
@@ -555,6 +593,10 @@ class Ray
             return $this;
         }
 
+        if (! $this->canSendPayload) {
+            return $this;
+        }
+
         if (! empty($this->limitOrigin)) {
             if (! self::$limiters->canSendPayload($this->limitOrigin)) {
                 return $this;
@@ -575,6 +617,13 @@ class Ray
             // In WordPress this entire package will be rewritten
         }
 
+        if (self::rateLimiter()->isMaxReached() ||
+            self::rateLimiter()->isMaxPerSecondReached()) {
+            $this->notifyWhenRateLimitReached();
+
+            return $this;
+        }
+
         $allMeta = array_merge([
             'php_version' => phpversion(),
             'php_version_id' => PHP_VERSION_ID,
@@ -589,11 +638,33 @@ class Ray
 
         self::$client->send($request);
 
+        self::rateLimiter()->hit();
+
         return $this;
     }
 
     public static function makePathOsSafe(string $path): string
     {
         return str_replace('/', DIRECTORY_SEPARATOR, $path);
+    }
+
+    public static function rateLimiter(): RateLimiter
+    {
+        return self::$rateLimiter;
+    }
+
+    protected function notifyWhenRateLimitReached(): void
+    {
+        if (self::rateLimiter()->isNotified()) {
+            return;
+        }
+
+        $customPayload = new CustomPayload('Rate limit has been reached...', 'Rate limit');
+
+        $request = new Request($this->uuid, [$customPayload], []);
+
+        self::$client->send($request);
+
+        self::rateLimiter()->notify();
     }
 }

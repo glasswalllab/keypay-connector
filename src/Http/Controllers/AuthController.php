@@ -9,6 +9,8 @@ class AuthController extends Controller
 {
   public function signin()
   {
+   dd(config('keypayConnector.redirectUri'));
+    
     // Initialize the OAuth client
     $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
       'clientSecret'            => config('keypayConnector.appSecret'),
@@ -17,6 +19,7 @@ class AuthController extends Controller
       'client_id'               => config('keypayConnector.appId'),
       'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
     ]);
+
 
     $authUrl = $oauthClient->getAuthorizationUrl();
 

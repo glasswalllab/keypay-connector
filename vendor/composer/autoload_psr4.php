@@ -8,8 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'voku\\' => array($vendorDir . '/voku/portable-ascii/src/voku'),
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
-    'glasswalllab\\wiiseconnector\\Tests\\' => array($baseDir . '/tests'),
-    'glasswalllab\\wiiseconnector\\' => array($baseDir . '/src'),
+    'glasswalllab\\keypayconnector\\Tests\\' => array($baseDir . '/tests'),
+    'glasswalllab\\keypayconnector\\' => array($baseDir . '/src'),
     'ZBateson\\StreamDecorators\\' => array($vendorDir . '/zbateson/stream-decorators/src'),
     'ZBateson\\MbWrapper\\' => array($vendorDir . '/zbateson/mb-wrapper/src'),
     'ZBateson\\MailMimeParser\\' => array($vendorDir . '/zbateson/mail-mime-parser/src'),

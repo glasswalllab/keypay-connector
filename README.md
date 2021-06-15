@@ -9,7 +9,7 @@ This package provides an integration (OAuth 2.0) to KeyPay.
 You can install the package via composer:
 
 ```bash
-composer require glasswalllab/keypayconnector
+composer require glasswalllab/keypayconnector 
 ```
 
 ## Usage
