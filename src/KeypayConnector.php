@@ -23,9 +23,9 @@ class KeypayConnector
 
         $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
             'clientSecret'            => config('keypayConnector.appSecret'),
+            'clientId'                => config('keypayConnector.appId'),
             'redirectUri'             => config('keypayConnector.redirectUri'),
             'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.authoriseEndpoint'),
-            'clientId'               => config('keypayConnector.appId'),
             'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
             'urlResourceOwnerDetails' => config('keypayConnector.resource'),
           ]);
