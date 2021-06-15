@@ -20,7 +20,7 @@ class AuthController extends Controller
       'urlResourceOwnerDetails' => config('keypayConnector.resource'),
     ]);
 
-
+    dd($oauthClient);
     $authUrl = $oauthClient->getAuthorizationUrl();
 
     // Save client state so we can validate in callback
