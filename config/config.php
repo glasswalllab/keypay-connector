@@ -16,4 +16,5 @@ return [
     'scopes'            =>env('KEYPAY_SCOPES',''),
     'baseUrl'           =>env('KEYPAY_BASE_API_URL',''),
     'companyName'       =>env('KEYPAY_COMPANY_NAME',''),
+    'businessId'        =>env('KEYPAY_BUSINESS_ID',''),
 ];
