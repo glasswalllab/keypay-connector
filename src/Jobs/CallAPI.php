@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CallWebService implements ShouldQueue
+class CallAPI implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,22 +31,21 @@ class CallWebService implements ShouldQueue
         $tokenCache = new TokenCache();
         $accessToken = $tokenCache->getAccessToken('keypay');
 
-        $url = config('keypayConnector.baseUrl').config('keypayConnector.tenantId')."/Production/ODataV4/Company('".config('keypayConnector.companyName')."')".$this->endpoint;
+        $url = config('keypayConnector.baseUrl').$endpoint;
 
         $options['headers']['Content-Type'] = 'application/json';
-        $options['headers']['If-Match'] = '*';
+        //$options['headers']['If-Match'] = '*';
 
         $options['body'] = $this->body; //json encoded value
         
-        $this->oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId'                => config('keypayConnector.appId'),
+        $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider([
             'clientSecret'            => config('keypayConnector.appSecret'),
             'redirectUri'             => config('keypayConnector.redirectUri'),
-            'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.authoriseEndpoint'),
-            'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tenantId').config('keypayConnector.tokenEndpoint'),
+            'urlAuthorize'            => config('keypayConnector.authority').config('keypayConnector.authoriseEndpoint'),
+            'clientId'                => config('keypayConnector.appId'),
+            'urlAccessToken'          => config('keypayConnector.authority').config('keypayConnector.tokenEndpoint'),
             'urlResourceOwnerDetails' => config('keypayConnector.resource'),
-            'scopes'                  => config('keypayConnector.scopes'),
-        ]);
+          ]);
 
         try
         {
@@ -58,9 +57,8 @@ class CallWebService implements ShouldQueue
             );
 
             $response = $this->oauthClient->getResponse($request);
-            return json_decode($response->getBody()->getContents());
+            return $response->getBody()->getContents();
             //event(new ResponseReceived($oauthClient->getResponse($request)));
-            
         } catch (Exception $ex) {
             return($ex);
         }
