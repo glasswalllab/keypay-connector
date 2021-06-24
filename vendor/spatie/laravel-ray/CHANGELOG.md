@@ -2,6 +2,26 @@
 
 All notable changes to `laravel-ray` will be documented in this file
 
+## 1.22.0 - 2021-06-24
+
+- when a query exception occurs, the query itself will also be sent to Ray.
+
+## 1.21.0 - 2021-06-22
+
+- add `countQueries`
+
+## 1.20.2 - 2021-06-21
+
+- fix `mailable` when using `Mail::fake` 
+
+## 1.20.1 - 2021-06-15
+
+- fix origin of stringable
+
+## 1.20.0 - 2021-06-15
+
+- add support for stringables
+
 ## 1.19.1 - 2021-06-11
 
 - better HTTP Client logging (#201)

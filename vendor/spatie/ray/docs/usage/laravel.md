@@ -43,6 +43,20 @@ ray()->showQueries(function() {
 User::all(); // this query won't be displayed.
 ```
 
+### Counting queries
+
+If you're interested in how many queries a given piece of code executes, and what the runtime of those queries is, you can use `countQueries`. It expects you to pass a closure in which all the executed queries will be counted.
+
+```php
+ray()->countQueries(function() {
+    User::all();
+    User::all();
+    User::all();
+});
+```
+
+![screenshot](/docs/ray/v1/images/query-count.png)
+
 ### Showing events
 
 You can display all events that are executed by calling `showEvents` (or `events`).
@@ -222,7 +236,7 @@ ray()->markdown('# Hello World');
 
 ### Displaying collections
 
-In a Laravel app, Ray will automatically register a `ray` collection macro to easily send collections to ray.
+Ray will automatically register a `ray` collection macro to easily send collections to ray.
 
 ```php
 collect(['a', 'b', 'c'])
@@ -232,6 +246,19 @@ collect(['a', 'b', 'c'])
 ```
 
 ![screenshot](/docs/ray/v1/images/collection.jpg)
+
+### Usage with a `Stringable`
+
+Ray will automatically register a `ray` macro to `Stringable` to easily send `Stringable`s to Ray.
+
+```php
+Str::of('Lorem')
+   ->append(' Ipsum')
+   ->ray()
+   ->append(' Dolor Sit Amen');
+```
+
+![screenshot](/docs/ray/v1/images/stringable.jpg)
 
 
 ### Displaying environment variables

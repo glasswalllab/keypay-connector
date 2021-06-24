@@ -5,10 +5,18 @@ namespace Spatie\LaravelRay;
 use Closure;
 use Composer\InstalledVersions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\QueryException;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\MailManager;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Testing\Fakes\MailFake;
 use Illuminate\Testing\TestResponse;
 use Illuminate\View\View;
 use Spatie\LaravelRay\Payloads\EnvironmentPayload;
+use Spatie\LaravelRay\Payloads\ExecutedQueryPayload;
 use Spatie\LaravelRay\Payloads\LoggedMailPayload;
 use Spatie\LaravelRay\Payloads\MailablePayload;
 use Spatie\LaravelRay\Payloads\MarkdownPayload;
@@ -25,8 +33,10 @@ use Spatie\LaravelRay\Watchers\RequestWatcher;
 use Spatie\LaravelRay\Watchers\ViewWatcher;
 use Spatie\LaravelRay\Watchers\Watcher;
 use Spatie\Ray\Client;
+use Spatie\Ray\Payloads\ExceptionPayload;
 use Spatie\Ray\Ray as BaseRay;
 use Spatie\Ray\Settings\Settings;
+use Throwable;
 
 class Ray extends BaseRay
 {
@@ -51,7 +61,19 @@ class Ray extends BaseRay
 
     public function mailable(Mailable $mailable): self
     {
+        $shouldRestoreFake = false;
+
+        if (get_class(app(MailManager::class)) === MailFake::class) {
+            $shouldRestoreFake = true;
+
+            Mail::swap(new MailManager(app()));
+        }
+
         $payload = MailablePayload::forMailable($mailable);
+
+        if ($shouldRestoreFake) {
+            Mail::fake();
+        }
 
         $this->sendRequest($payload);
 
@@ -267,6 +289,39 @@ class Ray extends BaseRay
         return $this->handleWatcherCallable($watcher, $callable);
     }
 
+    public function countQueries(callable $callable)
+    {
+        /** @var QueryWatcher $watcher */
+        $watcher = app(QueryWatcher::class);
+
+        $watcher->keepExecutedQueries();
+
+        if (! $watcher->enabled()) {
+            $watcher->doNotSendIndividualQueries();
+        }
+
+        $this->handleWatcherCallable($watcher, $callable);
+
+        $executedQueryStatistics = collect($watcher->getExecutedQueries())
+
+            ->pipe(function (Collection $queries) {
+                return [
+                    'Count' => $queries->count(),
+                    'Total time' => $queries->sum(function (QueryExecuted $query) {
+                        return $query->time;
+                    }),
+                ];
+            });
+
+        $executedQueryStatistics['Total time'] .= ' ms';
+
+        $watcher
+            ->stopKeepingAndClearExecutedQueries()
+            ->sendIndividualQueries();
+
+        $this->table($executedQueryStatistics, 'Queries');
+    }
+
     public function queries($callable = null)
     {
         return $this->showQueries($callable);
@@ -366,6 +421,21 @@ class Ray extends BaseRay
     protected function requestWatcher(): RequestWatcher
     {
         return app(RequestWatcher::class);
+    }
+
+    public function exception(Throwable $exception, array $meta = [])
+    {
+        $payloads[] = new ExceptionPayload($exception, $meta);
+        
+        if ($exception instanceof QueryException) {
+            $executedQuery = new QueryExecuted($exception->getSql(), $exception->getBindings(), null, DB::connection(config('database.default')));
+
+            $payloads[] = new ExecutedQueryPayload($executedQuery);
+        }
+
+        $this->sendRequest($payloads)->red();
+
+        return $this;
     }
 
     /**

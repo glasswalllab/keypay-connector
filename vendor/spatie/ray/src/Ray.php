@@ -490,7 +490,7 @@ class Ray
         return $this->sendRequest($payload);
     }
 
-    public function exception(Throwable $exception, array $meta = []): self
+    public function exception(Throwable $exception, array $meta = [])
     {
         $payload = new ExceptionPayload($exception, $meta);
 
@@ -533,6 +533,19 @@ class Ray
         $this->limitOrigin = (new DefaultOriginFactory())->getOrigin();
 
         self::$limiters->initialize($this->limitOrigin, $count);
+
+        return $this;
+    }
+
+    public function once(...$arguments): self
+    {
+        $this->limitOrigin = (new DefaultOriginFactory())->getOrigin();
+
+        self::$limiters->initialize($this->limitOrigin, 1);
+
+        if (! empty($arguments)) {
+            return $this->send(...$arguments);
+        }
 
         return $this;
     }
