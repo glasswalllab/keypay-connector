@@ -45,7 +45,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "glasswalllab\\keypayconnector\\keypayConnectorServiceProvider"
+                "glasswalllab\\keypayconnector\\KeypayConnectorServiceProvider"
             ],
             "aliases": {
                 "keypayConnector": "glasswalllab\\keypayconnector\\keypayConnectorFacade"
