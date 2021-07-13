@@ -14,7 +14,7 @@ class KeypayConnector
     {  
 
         $saveAPICall = APICall::create([
-            'request' => $body,
+            'request' => null,
         ]);
 
         $tokenCache = new TokenCache();
