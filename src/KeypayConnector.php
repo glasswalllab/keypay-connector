@@ -2,21 +2,14 @@
 
 namespace glasswalllab\keypayconnector;
 
-use glasswalllab\keypayconnector\Models\APICall;
-use glasswalllab\keypayconnector\Jobs\CallAPI;
 use glasswalllab\keypayconnector\TokenStore\TokenCache;
 use Illuminate\Http\Request;
-
 
 class KeypayConnector 
 {
     public function CallAPI($endpoint,$method,$body)
     {  
-
-        $saveAPICall = APICall::create([
-            'request' => null,
-        ]);
-
+        //Could move the below to job - but was having issues with the return
         $tokenCache = new TokenCache();
         $accessToken = $tokenCache->getAccessToken(config('keypayConnector.provider'));
 
@@ -46,10 +39,6 @@ class KeypayConnector
             );
 
             $response = $this->oauthClient->getResponse($request);
-            
-            $saveAPICall->response = $response->getBody()->getContents();
-            $saveAPICall->save();
-
             return $response->getBody()->getContents();
 
         } catch (Exception $ex) {
