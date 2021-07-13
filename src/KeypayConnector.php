@@ -53,8 +53,6 @@ class KeypayConnector
             return $response->getBody()->getContents();
 
         } catch (Exception $ex) {
-            $saveAPICall->response = "error";
-            $saveAPICall->save();
             return($ex);
         }
     }
